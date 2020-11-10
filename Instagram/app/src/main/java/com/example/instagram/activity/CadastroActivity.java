@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.instagram.R;
 import com.example.instagram.helper.ConfiguracaoFirebase;
+import com.example.instagram.helper.UsuarioFirebase;
 import com.example.instagram.model.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -72,6 +73,9 @@ public class CadastroActivity extends AppCompatActivity {
 
                         usuario.setId( idUsuario );
                         usuario.salvar();
+
+                        //Salvar dados no profile do Firebase
+                        UsuarioFirebase.atualizaNomeUsuario(usuario.getNome());
 
                     }catch (Exception e){
                         e.printStackTrace();

@@ -46,6 +46,8 @@ public class PerfilFragment extends Fragment {
         textSeguindo = view.findViewById(R.id.textSeguindo);
         buttonEditarPerfil = view.findViewById(R.id.buttonEditarPerfil);
 
+        progressBar.setVisibility(View.GONE);
+
         //Abre a edicação de perfil
         buttonEditarPerfil.setOnClickListener(new View.OnClickListener() {
             @Override
