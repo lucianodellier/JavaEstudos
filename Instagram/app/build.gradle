@@ -38,6 +38,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.google.firebase:firebase-storage'
     implementation 'com.google.firebase:firebase-database'
+    implementation 'com.firebaseui:firebase-ui-storage:6.2.0'
 
     //Dependencias Navigation Button
     implementation 'com.github.ittianyu:BottomNavigationViewEx:2.0.4'

@@ -5,6 +5,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Usuario implements Serializable {
     private String nome, email, senha;
@@ -20,6 +22,26 @@ public class Usuario implements Serializable {
         DatabaseReference usuario = firebaseRef.child("usuarios").child(getId());
 
         usuario.setValue( this );
+
+    }
+
+    public void atualizar(){
+
+        DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
+        DatabaseReference usuarioRef = firebaseRef.child("usuarios").child(getId());
+
+        Map<String, Object> valoresUsuario = new HashMap<>();
+        usuarioRef.updateChildren(valoresUsuario);
+    }
+
+    public Map<String, Object> converterParaMap(){
+        HashMap<String, Object> usuarioMap = new HashMap<>();
+        usuarioMap.put("email", getEmail());
+        usuarioMap.put("nome", getNome());
+        usuarioMap.put("id", getId());
+        usuarioMap.put("caminhoFoto", getCaminhoFoto());
+
+        return usuarioMap;
 
     }
 
