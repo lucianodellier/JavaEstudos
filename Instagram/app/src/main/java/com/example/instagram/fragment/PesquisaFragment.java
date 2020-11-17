@@ -1,18 +1,24 @@
 package com.example.instagram.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.SearchView;
 
 import com.example.instagram.R;
+import com.example.instagram.activity.PerfilAmigoActivity;
+import com.example.instagram.adapter.AdapterPesquisa;
 import com.example.instagram.helper.ConfiguracaoFirebase;
+import com.example.instagram.helper.RecyclerItemClickListener;
 import com.example.instagram.model.Usuario;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,6 +37,7 @@ public class PesquisaFragment extends Fragment {
 
     private List<Usuario> listaUsuarios;
     private DatabaseReference usuariosRef;
+    private AdapterPesquisa adapterPesquisa;
 
     public PesquisaFragment() {
         // Required empty public constructor
@@ -48,6 +55,36 @@ public class PesquisaFragment extends Fragment {
        //Configurações iniciais
         listaUsuarios = new ArrayList<>();
         usuariosRef = ConfiguracaoFirebase.getFirebaseDatabase().child("usuarios");
+
+        //Configura RecyclerView
+        recyclerPesquisa.setHasFixedSize(true);
+        recyclerPesquisa.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        adapterPesquisa = new AdapterPesquisa(listaUsuarios, getActivity());
+        recyclerPesquisa.setAdapter(adapterPesquisa);
+
+        //Configurar evento de clique
+        recyclerPesquisa.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), recyclerPesquisa, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+                Usuario usuarioSelecionado = listaUsuarios.get(position);
+                Intent i = new Intent(getActivity(), PerfilAmigoActivity.class);
+                i.putExtra("usuarioSelecionado", usuarioSelecionado);
+                startActivity(i);
+
+            }
+
+            @Override
+            public void onLongItemClick(View view, int position) {
+
+            }
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        }));
 
        //Configura searchView
         searchViewPesquisa.setQueryHint("Busca Usuários");
@@ -74,19 +111,24 @@ public class PesquisaFragment extends Fragment {
         listaUsuarios.clear();
 
         //Pesquisa usuario caso tenha algum texto na pesquisa
-        if(texto.length() > 0){
+        if(texto.length() >= 2){
             Query query = usuariosRef.orderByChild("nome").startAt(texto).endAt(texto + "\uf8ff");
 
             query.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    //limpar Lista
+                    listaUsuarios.clear();
+
                     for(DataSnapshot ds : dataSnapshot.getChildren()){
 
                         listaUsuarios.add(ds.getValue(Usuario.class));
 
                     }
 
-                    int total = listaUsuarios.size();
+                    adapterPesquisa.notifyDataSetChanged();
+                    //int total = listaUsuarios.size();
 
                 }
 
