@@ -12,7 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.SearchView;
+import androidx.appcompat.widget.SearchView;
 
 import com.example.instagram.R;
 import com.example.instagram.activity.PerfilAmigoActivity;
@@ -39,7 +39,6 @@ public class PesquisaFragment extends Fragment {
     private List<Usuario> listaUsuarios;
     private DatabaseReference usuariosRef;
     private AdapterPesquisa adapterPesquisa;
-
     private String idUsuarioLogado;
 
 

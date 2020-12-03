@@ -124,6 +124,7 @@ public class LoginActivity extends AppCompatActivity {
     public void abrirCadastro(View view){
         Intent i = new Intent(LoginActivity.this, CadastroActivity.class);
         startActivity(i);
+        finish();
     }
 
     public void abrirTelaPrincipal(){
